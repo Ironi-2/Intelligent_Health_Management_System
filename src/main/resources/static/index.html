@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 智能助手</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- 侧边栏 -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1>🤖 AI 助手</h1>
+            </div>
+            <button class="new-chat-btn" onclick="newChat()">
+                <span>+</span> 新建对话
+            </button>
+            <div class="chat-history" id="chatHistory">
+                <!-- 聊天记录会动态添加到这里 -->
+            </div>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="avatar">👤</div>
+                    <div class="user-details">
+                        <div class="user-name">用户</div>
+                        <div class="user-status">在线</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 主聊天区域 -->
+        <main class="main-chat">
+            <!-- 聊天头部 -->
+            <header class="chat-header">
+                <div class="chat-title">
+                    <h2 id="currentChatTitle">新对话</h2>
+                </div>
+                <div class="chat-actions">
+                    <button class="action-btn" onclick="clearChat()" title="清空聊天">🗑️</button>
+                    <button class="action-btn" onclick="exportChat()" title="导出聊天">💾</button>
+                </div>
+            </header>
+
+            <!-- 消息区域 -->
+            <div class="messages-container" id="messagesContainer">
+                <div class="welcome-message">
+                    <div class="welcome-icon">🤖</div>
+                    <h2>你好!我是 AI 智能助手</h2>
+                    <p>我可以帮助你解答问题、提供建议、完成任务等。请随时向我提问!</p>
+                    <div class="quick-actions">
+                        <button class="quick-action-btn" onclick="sendQuickQuestion('你能做什么?')">你能做什么?</button>
+                        <button class="quick-action-btn" onclick="sendQuickQuestion('帮我写一首诗')">帮我写一首诗</button>
+                        <button class="quick-action-btn" onclick="sendQuickQuestion('解释一下人工智能')">解释一下人工智能</button>
+                        <button class="quick-action-btn" onclick="sendQuickQuestion('给我讲个笑话')">给我讲个笑话</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 输入区域 -->
+            <div class="input-container">
+                <div class="input-wrapper">
+                    <textarea 
+                        id="messageInput" 
+                        placeholder="输入你的问题..." 
+                        rows="1"
+                        onkeydown="handleKeyDown(event)"
+                        oninput="autoResizeTextarea(this)"
+                    ></textarea>
+                    <button class="send-btn" onclick="sendMessage()" id="sendBtn">
+                        <span id="sendIcon">➤</span>
+                        <span id="loadingIcon" class="loading" style="display: none;">⏳</span>
+                    </button>
+                </div>
+                <div class="input-footer">
+                    <span class="hint-text">按 Enter 发送, Shift + Enter 换行</span>
+                    <span class="model-info">模型: Qwen 2.5</span>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/chat.js"></script>
+</body>
+</html>
