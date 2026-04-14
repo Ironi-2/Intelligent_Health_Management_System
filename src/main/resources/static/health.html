@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能健康管理系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .result-section {
+            display: none;
+        }
+
+        .bmi-display {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .bmi-value {
+            font-size: 3em;
+            font-weight: bold;
+        }
+
+        .bmi-category {
+            font-size: 1.5em;
+            margin-top: 10px;
+        }
+
+        .advice-section {
+            margin-top: 20px;
+        }
+
+        .advice-card {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+
+        .advice-card h3 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .advice-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            background: #ff4444;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏥 智能健康管理系统</h1>
+            <p>基于AI的个性化健康建议和每日计划</p>
+        </div>
+
+        <div class="card">
+            <h2>📋 填写您的健康档案</h2>
+            <form id="healthForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>姓名 *</label>
+                        <input type="text" id="name" required placeholder="请输入姓名">
+                    </div>
+                    <div class="form-group">
+                        <label>年龄 *</label>
+                        <input type="number" id="age" required min="1" max="150" placeholder="请输入年龄">
+                    </div>
+                    <div class="form-group">
+                        <label>性别 *</label>
+                        <select id="gender" required>
+                            <option value="">请选择</option>
+                            <option value="男">男</option>
+                            <option value="女">女</option>
+                            <option value="其他">其他</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>身高(cm) *</label>
+                        <input type="number" id="height" required min="50" max="250" step="0.1" placeholder="请输入身高">
+                    </div>
+                    <div class="form-group">
+                        <label>体重(kg) *</label>
+                        <input type="number" id="weight" required min="10" max="300" step="0.1" placeholder="请输入体重">
+                    </div>
+                    <div class="form-group">
+                        <label>饮食习惯 *</label>
+                        <select id="dietHabit" required>
+                            <option value="">请选择</option>
+                            <option value="荤素搭配">荤素搭配</option>
+                            <option value="素食">素食</option>
+                            <option value="高蛋白">高蛋白</option>
+                            <option value="低碳水">低碳水</option>
+                            <option value="清淡">清淡</option>
+                            <option value="偏油腻">偏油腻</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>运动习惯 *</label>
+                        <select id="exerciseHabit" required>
+                            <option value="">请选择</option>
+                            <option value="久坐不动">久坐不动</option>
+                            <option value="轻度运动">轻度运动(每周1-2次)</option>
+                            <option value="中度运动">中度运动(每周3-4次)</option>
+                            <option value="高强度运动">高强度运动(每周5次以上)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>健康目标 *</label>
+                        <select id="healthGoal" required>
+                            <option value="">请选择</option>
+                            <option value="减重">减重</option>
+                            <option value="增肌">增肌</option>
+                            <option value="保持健康">保持健康</option>
+                            <option value="改善睡眠">改善睡眠</option>
+                            <option value="提高体力">提高体力</option>
+                            <option value="控制血压">控制血压</option>
+                            <option value="控制血糖">控制血糖</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>既往病史</label>
+                        <textarea id="medicalHistory" placeholder="如:高血压、糖尿病、心脏病等,无则填'无'"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>食物过敏史</label>
+                        <textarea id="allergies" placeholder="如:海鲜、花生、牛奶等,无则填'无'"></textarea>
+                    </div>
+                </div>
+                <button type="submit" class="btn" id="submitBtn">🚀 生成个性化健康建议</button>
+            </form>
+        </div>
+
+        <div class="loading" id="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p style="color: white; margin-top: 20px;">AI正在为您生成个性化建议,请稍候...</p>
+        </div>
+
+        <div class="error-message" id="errorMessage"></div>
+
+        <div class="result-section" id="resultSection">
+            <div class="card">
+                <h2>📊 您的健康分析</h2>
+                <div class="bmi-display">
+                    <div class="bmi-value" id="bmiValue">--</div>
+                    <div class="bmi-category" id="bmiCategory">--</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>💡 AI个性化健康建议</h2>
+                <div class="advice-section">
+                    <div class="advice-card">
+                        <h3>🎯 健康建议</h3>
+                        <p id="healthAdvice">--</p>
+                    </div>
+                    <div class="advice-card">
+                        <h3>🍽️ 每日饮食计划</h3>
+                        <p id="dailyDietPlan">--</p>
+                    </div>
+                    <div class="advice-card">
+                        <h3>🏃 每日运动计划</h3>
+                        <p id="dailyExercisePlan">--</p>
+                    </div>
+                    <div class="advice-card">
+                        <h3>😴 生活作息建议</h3>
+                        <p id="lifestyleAdvice">--</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn" onclick="resetForm()" style="width: 100%;">🔄 重新生成</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('healthForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                age: parseInt(document.getElementById('age').value),
+                gender: document.getElementById('gender').value,
+                height: parseFloat(document.getElementById('height').value),
+                weight: parseFloat(document.getElementById('weight').value),
+                dietHabit: document.getElementById('dietHabit').value,
+                exerciseHabit: document.getElementById('exerciseHabit').value,
+                healthGoal: document.getElementById('healthGoal').value,
+                medicalHistory: document.getElementById('medicalHistory').value || '无',
+                allergies: document.getElementById('allergies').value || '无'
+            };
+
+            // 显示加载状态
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('resultSection').style.display = 'none';
+            document.getElementById('errorMessage').style.display = 'none';
+            document.getElementById('submitBtn').disabled = true;
+
+            try {
+                const response = await fetch('/api/health/advice', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (!response.ok) {
+                    throw new Error('请求失败,请稍后重试');
+                }
+
+                const data = await response.json();
+                
+                // 显示结果
+                displayResults(data);
+                
+            } catch (error) {
+                showError(error.message);
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('submitBtn').disabled = false;
+            }
+        });
+
+        function displayResults(data) {
+            document.getElementById('bmiValue').textContent = data.bmi;
+            document.getElementById('bmiCategory').textContent = 'BMI分类: ' + data.bmiCategory;
+            document.getElementById('healthAdvice').textContent = data.healthAdvice;
+            document.getElementById('dailyDietPlan').textContent = data.dailyDietPlan;
+            document.getElementById('dailyExercisePlan').textContent = data.dailyExercisePlan;
+            document.getElementById('lifestyleAdvice').textContent = data.lifestyleAdvice;
+            
+            document.getElementById('resultSection').style.display = 'block';
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = '❌ ' + message;
+            errorDiv.style.display = 'block';
+        }
+
+        function resetForm() {
+            document.getElementById('healthForm').reset();
+            document.getElementById('resultSection').style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

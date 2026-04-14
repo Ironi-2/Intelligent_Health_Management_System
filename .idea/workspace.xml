@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2897eea0-7a31-4834-ae4d-7b03351b07c7" name="更改" comment="第一次成功">
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/ChatController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/ChatController.java" afterDir="false" />
+    <list default="true" id="2897eea0-7a31-4834-ae4d-7b03351b07c7" name="更改" comment="ai界面优化">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -13,7 +13,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="12" />
+    <option name="cachedIndexableFilesCount" value="17" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -87,7 +87,15 @@
       <option name="project" value="LOCAL" />
       <updated>1776142945676</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="ai">
+      <option name="closed" value="true" />
+      <created>1776173452500</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1776173452500</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -102,7 +110,10 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="第一次成功" />
-    <option name="LAST_COMMIT_MESSAGE" value="第一次成功" />
+    <MESSAGE value="ai成功部署本地" />
+    <MESSAGE value="ai界面优化" />
+    <MESSAGE value="ai成功部署本地" />
+    <MESSAGE value="ai界面优化" />
+    <option name="LAST_COMMIT_MESSAGE" value="ai界面优化" />
   </component>
 </project>
