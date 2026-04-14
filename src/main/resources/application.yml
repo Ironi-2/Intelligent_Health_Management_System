@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: ai-java-demo
+  ai:
+    openai:
+      api-key: ollama  # 这里填硅基流动给你的 sk-xxxx
+      base-url: http://localhost:11434
+      chat:
+        options:
+          model: qwen2.5:1.5b
+
+server:
+  port: 8080
